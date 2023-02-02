@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, flash
 
 auth = Blueprint('auth', __name__)
 
@@ -22,13 +22,13 @@ def sign_up():
         password2 = request.form.get('password2')
         
         if len(email) < 5:
-            pass
+            flash("이메일은 5자 이상이어야 합니다.", category="error")
         elif len(nickname) < 2:
-            pass
+            flash("닉네임은 2자 이상이어야 합니다", category="error")
         elif password1 != password2:
-            pass
+            flash("비밀번호와 비밀번호재입력이 서로 다릅니다.", category="error")
         elif len(password1) < 7:
-            pass
+            flash("비밀번호가 너무 짧습니다.", category="error")
         else:
-            pass # create user -> DB
+            flash("회원가입 완료.", category="success")
     return render_template('sign_up.html')

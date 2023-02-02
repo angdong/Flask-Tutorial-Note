@@ -32,6 +32,28 @@
         </div>
     </nav>
 
+    <!-- Message Flashing -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                {% if category == "error" %}         
+                <!-- error 메시지 -->
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% elif category == "success" %}
+                <!-- success 메시지 -->
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+    {% endwith %}
+
     <!-- content -->
     <!-- 부트스트랩에서 내용을 담을 때 사용하는 레이아웃용 기본 블록 -->
     <div class="container">

@@ -1,5 +1,33 @@
 {% extends "base.html" %}
-{% block title %}Title - Home{% endblock %}
+{% block title %}
+Title - Home
+{% endblock %}
+
 {% block content %}
-<h1>Welcome to Homepage!</h1>
+<!-- 메모 영역 html 생성 -->
+<form action="" method="post">
+    <h2 align="center">Note</h2>
+    <div class="form-floating">
+        <input name="note-title" type="text" class="form-control" id="note-title" placeholder="name@example.com">
+        <label for="note-title">Title</label>
+    </div>
+    <div class="form-floating">
+        <textarea name="note-content" class="form-control" placeholder="Leave a content here" id="note-content"></textarea>
+        <label for="note-content">Content</label>
+    </div>
+    <button type="submit" class="btn btn-primary">메모 저장</button>
+</form>
+
+<!-- 메모 조회 영역 생성 --><div class="list-group">
+    {% for note in current_user.notes %}
+    <a href="#" class="list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-2">{{note.title}}</h5>
+            <small class="text-muted">{{note.datetime}}</small>
+        </div>
+        <p class="mb-1">{{note.content}}</p>
+    </a>  
+    {% endfor %}
+</div>
+
 {% endblock %}

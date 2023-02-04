@@ -34,6 +34,7 @@ def sign_in():
 def logout():
     # return render_template('logout.html')
     # 로그아웃을 여러 번 안하기 때문
+    logout_user()
     return redirect(url_for('auth.sign_in'))
 
 @auth.route('/sign-up', methods=['GET', 'POST']) # GET: 웹 자원 조회 POST: 웹 자원 생성

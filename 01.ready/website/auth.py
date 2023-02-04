@@ -1,4 +1,7 @@
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, render_template, request, flash, redirect, url_for
+from werkzeug.security import generate_password_hash, check_password_hash # 해싱
+from .models import User # User model 가져오기
+from . import db
 
 auth = Blueprint('auth', __name__)
 
@@ -30,5 +33,22 @@ def sign_up():
         elif len(password1) < 7:
             flash("비밀번호가 너무 짧습니다.", category="error")
         else:
+            # 회원가입 시 DB에 저장될 데이터 구성 가져오기
+            new_user = User(
+                email=email, 
+                nickname=nickname, 
+                password=generate_password_hash(password1, method='sha256') # password 해싱하기
+            )
+            # db에 회원가입 정보 저장
+            db.session.add(new_user) # 생성한 User인스턴스 추가하기
+            db.session.commit() # 임시상태인 db -> commit 해서 최종 반영하기
+            db.session.commit()
             flash("회원가입 완료.", category="success")
+            """
+            * render_template -> Forward
+            * redirect() -> Redirect
+                Forward로 POST를 처리하면 새로고침시 같은 요청이 반복됨
+                Redirect로 처리하면 POST로 처리한 결과를 GET을 통하여 조회화면으로 이동되도록 Redirect시킨다
+            """
+            return redirect(url_for('views.home'))
     return render_template('sign_up.html')

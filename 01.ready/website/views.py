@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from flask_login import login_required, current_user
 from .models import Note
 from . import db
@@ -32,3 +32,18 @@ def home():
     
     # url 접속시에 템플릿(html)들을 되돌려주도록 만들기
     return render_template('home.html') # 클라이언트 요청에 응답할 데이터를 return 시키는 함수 생성하기
+
+# 메모 삭제 기능
+@views.route('delete-note', methods=['POST'])
+def delete_note():
+    # POST : 메모 삭제
+    if request.method == "POST":
+        note = request.get_json()
+        note_id = note.get('noteId')
+        
+        select_note = Note.query.get(note_id)
+        if select_note:
+            if select_note.user_id == current_user.id:
+                db.session.delete(select_note)
+                db.session.commit()
+        return jsonify({})

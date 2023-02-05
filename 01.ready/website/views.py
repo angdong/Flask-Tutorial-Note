@@ -27,6 +27,8 @@ def home():
             db.session.commit()
             
             flash("메모 생성 완료", category="success")
+            # 메모 계속 생성되는 것을 방지하기 위함
+            return redirect(url_for('views.home'))
     
     # url 접속시에 템플릿(html)들을 되돌려주도록 만들기
     return render_template('home.html') # 클라이언트 요청에 응답할 데이터를 return 시키는 함수 생성하기
